@@ -53,7 +53,7 @@ include $(CLEAR_VARS)
 
 # JPEG
 LOCAL_MODULE := jpeglib
-LOCAL_SRC_FILES := obj/jpeglib/libjpeglib.a
+LOCAL_SRC_FILES := obj/jpeglib/libjpeg.a
 include $(PREBUILT_STATIC_LIBRARY)
 include $(CLEAR_VARS)
 
@@ -198,7 +198,19 @@ LOCAL_CPP_FEATURES += rtti exceptions
 LOCAL_SRC_FILES    := $(wildcard ../src/*.cpp)     \
                       $(wildcard ../src/*/*.cpp)   \
                       $(wildcard ../src/*/*/*.cpp)
-LOCAL_LDLIBS       := -llog -landroid -lEGL -lGLESv3 -lOpenSLES
+LOCAL_LDLIBS       := -llog -landroid -lEGL -lGLESv3 -lOpenSLES \
+                      -Wl,--exclude-libs,libopenal.a \
+                      -Wl,--exclude-libs,libogg.a \
+                      -Wl,--exclude-libs,libvorbis.a \
+                      -Wl,--exclude-libs,libvorbisfile.a \
+                      -Wl,--exclude-libs,libcurl.a \
+                      -Wl,--exclude-libs,libcrypto.a \
+                      -Wl,--exclude-libs,libssl.a \
+                      -Wl,--exclude-libs,libjpeg.a \
+                      -Wl,--exclude-libs,libz.a \
+                      -Wl,--exclude-libs,libpng.a, \
+                      -Wl,--exclude-libs,libfreetype.a
+
 LOCAL_CFLAGS       := -I../lib/angelscript/include      \
                       -I../lib/bullet/src               \
                       -I../lib/libraqm                  \
@@ -231,7 +243,7 @@ LOCAL_CPPFLAGS     := -std=gnu++0x
 
 LOCAL_STATIC_LIBRARIES := irrlicht bullet enet ifaddrs angelscript mcpp \
                           vorbisfile vorbis ogg openal curl libssl libcrypto \
-                          gnustl_static raqm fribidi harfbuzz freetype graphics_utils
+                          c++_static raqm fribidi harfbuzz freetype graphics_utils
 
 include $(BUILD_SHARED_LIBRARY)
 include $(CLEAR_VARS)
